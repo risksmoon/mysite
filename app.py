@@ -1,0 +1,16 @@
+from flask import Flask, render_template, request
+
+app = Flask(__name__)
+
+@app.route("/", methods=["GET", "POST"])
+def home():
+    name = ""
+    age = ""
+
+    if request.method == "POST":
+        name = request.form["name"]
+        age = request.form["age"]
+
+    return render_template("index.html", name=name, age=age)
+
+app.run(debug=True)
