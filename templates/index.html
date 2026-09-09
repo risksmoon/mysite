@@ -19,18 +19,21 @@
             align-items: center;
             font-family: Arial, sans-serif;
             background: linear-gradient(135deg, #667eea, #764ba2);
+            padding: 20px;
         }
 
         .game {
-            width: 420px;
+            width: 440px;
+            max-width: 100%;
             padding: 35px;
             background: white;
-            border-radius: 24px;
+            border-radius: 25px;
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
             text-align: center;
         }
 
         h1 {
+            margin-top: 0;
             color: #333;
         }
 
@@ -42,7 +45,7 @@
 
         .subtitle {
             color: #777;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         input {
@@ -50,43 +53,112 @@
             padding: 14px;
             margin-top: 10px;
             border: 2px solid #eee;
-            border-radius: 10px;
+            border-radius: 12px;
             font-size: 16px;
         }
 
-        .continue {
+        button {
+            cursor: pointer;
+        }
+
+        .continue,
+        .mode,
+        .answer,
+        .skip,
+        .restart {
             width: 100%;
-            padding: 14px;
-            margin-top: 15px;
+            padding: 15px;
+            margin-top: 12px;
             border: none;
-            border-radius: 10px;
-            background: #667eea;
-            color: white;
+            border-radius: 13px;
             font-size: 16px;
             font-weight: bold;
-            cursor: pointer;
+        }
+
+        .continue,
+        .mode {
+            background: #667eea;
+            color: white;
+        }
+
+        .mode:hover,
+        .continue:hover {
+            opacity: 0.9;
         }
 
         .crystals {
             display: inline-block;
             padding: 10px 18px;
-            margin: 15px 0;
+            margin: 10px 0 20px;
             background: #f3f4ff;
             border-radius: 12px;
             font-weight: bold;
+            font-size: 18px;
         }
 
-        .mode {
-            width: 100%;
-            padding: 17px;
-            margin-top: 12px;
-            border: none;
-            border-radius: 14px;
-            background: #667eea;
-            color: white;
-            font-size: 17px;
+        .question {
+            font-size: 21px;
             font-weight: bold;
-            cursor: pointer;
+            color: #333;
+            margin: 25px 0;
+        }
+
+        .progress {
+            color: #777;
+            font-size: 14px;
+        }
+
+        .answer {
+            background: #f1f3ff;
+            color: #333;
+            border: 2px solid #e5e7ff;
+        }
+
+        .answer:hover {
+            background: #e5e7ff;
+        }
+
+        .skip {
+            background: #eee;
+            color: #555;
+            margin-top: 20px;
+        }
+
+        .skip:hover {
+            background: #ddd;
+        }
+
+        .message {
+            padding: 12px;
+            margin: 15px 0;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+
+        .correct {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .wrong {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .info {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .score {
+            font-size: 30px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
+        .small {
+            color: #777;
+            margin-top: 15px;
         }
     </style>
 </head>
@@ -95,7 +167,7 @@
 
 <div class="game">
 
-    {% if not name %}
+    {% if page == "start" %}
 
         <h1>🎮 Испытания</h1>
 
@@ -127,7 +199,8 @@
 
         </form>
 
-    {% else %}
+
+    {% elif page == "menu" %}
 
         <h1>🎮 Испытания</h1>
 
@@ -139,25 +212,132 @@
             Тебе {{ age }} лет.
         </div>
 
-        <p class="subtitle">
-            Выбери испытание и проверь свои знания!
-        </p>
-
         <div class="crystals">
-            💎 Кристаллы: 0
+            💎 Кристаллы: {{ crystals }}
         </div>
 
-        <button class="mode">
-            🧠 Логика
-        </button>
+        <p class="subtitle">
+            Выбери испытание:
+        </p>
 
-        <button class="mode">
-            ➗ Математика
-        </button>
+        <a href="{{ url_for('game', mode='logic') }}">
+            <button class="mode">
+                🧠 Логика
+            </button>
+        </a>
 
-        <button class="mode">
-            🖼️ Угадай мультсериал
-        </button>
+        <a href="{{ url_for('game', mode='math') }}">
+            <button class="mode">
+                ➗ Математика
+            </button>
+        </a>
+
+        <a href="{{ url_for('game', mode='cartoon') }}">
+            <button class="mode">
+                🖼️ Угадай мультсериал
+            </button>
+        </a>
+
+
+    {% elif page == "question" %}
+
+        <h1>🎮 Испытание</h1>
+
+        <div class="crystals">
+            💎 {{ crystals }}
+        </div>
+
+        <div class="progress">
+            Вопрос {{ number }} из {{ total }}
+        </div>
+
+        {% if result == "correct" %}
+            <div class="message correct">
+                ✅ Правильно! +1 💎
+            </div>
+        {% elif result == "wrong" %}
+            <div class="message wrong">
+                ❌ Неправильно!
+            </div>
+        {% elif result == "skipped" %}
+            <div class="message info">
+                ⏭️ Вопрос пропущен. −1 💎
+            </div>
+        {% elif result == "no_crystals" %}
+            <div class="message info">
+                💎 У тебя нет кристаллов для пропуска.
+            </div>
+        {% endif %}
+
+        <div class="question">
+            {{ question }}
+        </div>
+
+        <form method="POST">
+
+            {% for answer in answers %}
+
+                <button
+                    class="answer"
+                    type="submit"
+                    name="answer"
+                    value="{{ answer }}"
+                >
+                    {{ answer }}
+                </button>
+
+            {% endfor %}
+
+        </form>
+
+        {% if crystals > 0 %}
+            <a href="{{ url_for('skip') }}">
+                <button class="skip">
+                    ⏭️ Пропустить за 1 💎
+                </button>
+            </a>
+        {% else %}
+            <button class="skip" disabled>
+                ⏭️ Пропустить за 1 💎
+            </button>
+        {% endif %}
+
+
+    {% elif page == "result" %}
+
+        <h1>🏆 Результат</h1>
+
+        <div class="welcome">
+            Отлично, <strong>{{ name }}</strong>!
+        </div>
+
+        <div class="score">
+            {{ score }} / {{ total }}
+        </div>
+
+        <div class="crystals">
+            💎 Кристаллы: {{ crystals }}
+        </div>
+
+        {% if score == total %}
+            <p>🔥 Идеальный результат!</p>
+        {% elif score >= total / 2 %}
+            <p>👏 Хороший результат!</p>
+        {% else %}
+            <p>💪 Попробуй ещё раз!</p>
+        {% endif %}
+
+        <a href="{{ url_for('menu') }}">
+            <button class="mode">
+                🎮 Вернуться в меню
+            </button>
+        </a>
+
+        <a href="{{ url_for('restart') }}">
+            <button class="restart">
+                🔄 Начать заново
+            </button>
+        </a>
 
     {% endif %}
 
