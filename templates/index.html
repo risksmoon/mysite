@@ -14,53 +14,65 @@
         body {
             margin: 0;
             min-height: 100vh;
-
             display: flex;
             justify-content: center;
             align-items: center;
-
             font-family: Arial, sans-serif;
-
             background: linear-gradient(135deg, #667eea, #764ba2);
         }
 
         .game {
             width: 420px;
             padding: 35px;
-
             background: white;
             border-radius: 24px;
-
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
-
             text-align: center;
         }
 
         h1 {
-            margin-bottom: 10px;
             color: #333;
         }
 
         .welcome {
             color: #555;
             font-size: 18px;
-            margin-bottom: 5px;
+            margin: 8px;
         }
 
         .subtitle {
             color: #777;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            margin-top: 10px;
+            border: 2px solid #eee;
+            border-radius: 10px;
+            font-size: 16px;
+        }
+
+        .continue {
+            width: 100%;
+            padding: 14px;
+            margin-top: 15px;
+            border: none;
+            border-radius: 10px;
+            background: #667eea;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
         }
 
         .crystals {
             display: inline-block;
-
             padding: 10px 18px;
-            margin-bottom: 20px;
-
+            margin: 15px 0;
             background: #f3f4ff;
             border-radius: 12px;
-
             font-weight: bold;
         }
 
@@ -68,55 +80,64 @@
             width: 100%;
             padding: 17px;
             margin-top: 12px;
-
             border: none;
             border-radius: 14px;
-
             background: #667eea;
             color: white;
-
             font-size: 17px;
             font-weight: bold;
-
             cursor: pointer;
-
-            transition: 0.2s;
-        }
-
-        .mode:hover {
-            background: #5568d9;
-            transform: scale(1.02);
-        }
-
-        .result {
-            margin-top: 20px;
-            padding: 15px;
-
-            background: #f3f4ff;
-            border-radius: 12px;
-
-            color: #333;
         }
     </style>
 </head>
 
 <body>
 
-    <div class="game">
+<div class="game">
+
+    {% if not name %}
 
         <h1>🎮 Испытания</h1>
 
-        {% if name %}
-            <div class="welcome">
-                👋 Привет, <strong>{{ name }}</strong>!
-            </div>
+        <p class="subtitle">
+            Сначала расскажи немного о себе
+        </p>
 
-            {% if age %}
-                <div class="welcome">
-                    Тебе {{ age }} лет.
-                </div>
-            {% endif %}
-        {% endif %}
+        <form method="POST">
+
+            <input
+                type="text"
+                name="name"
+                placeholder="Введите имя"
+                required
+            >
+
+            <input
+                type="number"
+                name="age"
+                placeholder="Введите возраст"
+                min="1"
+                max="120"
+                required
+            >
+
+            <button class="continue" type="submit">
+                Продолжить
+            </button>
+
+        </form>
+
+    {% else %}
+
+        <h1>🎮 Испытания</h1>
+
+        <div class="welcome">
+            👋 Привет, <strong>{{ name }}</strong>!
+        </div>
+
+        <div class="welcome">
+            Тебе {{ age }} лет.
+        </div>
 
         <p class="subtitle">
             Выбери испытание и проверь свои знания!
@@ -138,7 +159,9 @@
             🖼️ Угадай мультсериал
         </button>
 
-    </div>
+    {% endif %}
+
+</div>
 
 </body>
 </html>
