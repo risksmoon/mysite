@@ -13,4 +13,5 @@ def home():
 
     return render_template("index.html", name=name, age=age)
 
-app.run(debug=True)
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=10000)
