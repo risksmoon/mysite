@@ -1,6 +1,133 @@
-mysite
-├── app.py
-├── Procfile
-├── requirements.txt
-└── templates
-    └── index.html
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Мой первый сайт</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            font-family: Arial, sans-serif;
+
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .card {
+            width: 400px;
+            padding: 35px;
+
+            background: white;
+            border-radius: 20px;
+
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        p {
+            color: #777;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            margin-top: 12px;
+
+            border: 2px solid #eee;
+            border-radius: 10px;
+
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            margin-top: 20px;
+
+            border: none;
+            border-radius: 10px;
+
+            background: #667eea;
+            color: white;
+
+            font-size: 16px;
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #5568d9;
+        }
+
+        .result {
+            margin-top: 25px;
+            padding: 15px;
+
+            background: #f3f4ff;
+            border-radius: 10px;
+
+            color: #333;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card">
+
+        <h1>👋 Привет!</h1>
+
+        <p>Расскажи немного о себе</p>
+
+        <form method="POST">
+
+            <input
+                type="text"
+                name="name"
+                placeholder="Введите имя"
+                required
+            >
+
+            <input
+                type="number"
+                name="age"
+                placeholder="Введите возраст"
+                min="1"
+                max="120"
+                required
+            >
+
+            <button type="submit">
+                Продолжить
+            </button>
+
+        </form>
+
+        {% if name %}
+            <div class="result">
+                <strong>Привет, {{ name }}! 👋</strong>
+                <br>
+                Тебе {{ age }} лет.
+            </div>
+        {% endif %}
+
+    </div>
+
+</body>
+</html>
