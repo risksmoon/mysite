@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Мой первый сайт</title>
+    <title>Испытания</title>
 
     <style>
         * {
@@ -14,6 +14,7 @@
         body {
             margin: 0;
             min-height: 100vh;
+
             display: flex;
             justify-content: center;
             align-items: center;
@@ -23,12 +24,12 @@
             background: linear-gradient(135deg, #667eea, #764ba2);
         }
 
-        .card {
-            width: 400px;
+        .game {
+            width: 420px;
             padding: 35px;
 
             background: white;
-            border-radius: 20px;
+            border-radius: 24px;
 
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
 
@@ -36,51 +37,63 @@
         }
 
         h1 {
+            margin-bottom: 10px;
             color: #333;
         }
 
-        p {
-            color: #777;
+        .welcome {
+            color: #555;
+            font-size: 18px;
+            margin-bottom: 5px;
         }
 
-        input {
+        .subtitle {
+            color: #777;
+            margin-bottom: 25px;
+        }
+
+        .crystals {
+            display: inline-block;
+
+            padding: 10px 18px;
+            margin-bottom: 20px;
+
+            background: #f3f4ff;
+            border-radius: 12px;
+
+            font-weight: bold;
+        }
+
+        .mode {
             width: 100%;
-            padding: 14px;
+            padding: 17px;
             margin-top: 12px;
 
-            border: 2px solid #eee;
-            border-radius: 10px;
-
-            font-size: 16px;
-        }
-
-        button {
-            width: 100%;
-            padding: 14px;
-            margin-top: 20px;
-
             border: none;
-            border-radius: 10px;
+            border-radius: 14px;
 
             background: #667eea;
             color: white;
 
-            font-size: 16px;
+            font-size: 17px;
             font-weight: bold;
 
             cursor: pointer;
+
+            transition: 0.2s;
         }
 
-        button:hover {
+        .mode:hover {
             background: #5568d9;
+            transform: scale(1.02);
         }
 
         .result {
-            margin-top: 25px;
+            margin-top: 20px;
             padding: 15px;
 
             background: #f3f4ff;
-            border-radius: 10px;
+            border-radius: 12px;
 
             color: #333;
         }
@@ -89,43 +102,41 @@
 
 <body>
 
-    <div class="card">
+    <div class="game">
 
-        <h1>👋 Привет!</h1>
-
-        <p>Расскажи немного о себе</p>
-
-        <form method="POST">
-
-            <input
-                type="text"
-                name="name"
-                placeholder="Введите имя"
-                required
-            >
-
-            <input
-                type="number"
-                name="age"
-                placeholder="Введите возраст"
-                min="1"
-                max="120"
-                required
-            >
-
-            <button type="submit">
-                Продолжить
-            </button>
-
-        </form>
+        <h1>🎮 Испытания</h1>
 
         {% if name %}
-            <div class="result">
-                <strong>Привет, {{ name }}! 👋</strong>
-                <br>
-                Тебе {{ age }} лет.
+            <div class="welcome">
+                👋 Привет, <strong>{{ name }}</strong>!
             </div>
+
+            {% if age %}
+                <div class="welcome">
+                    Тебе {{ age }} лет.
+                </div>
+            {% endif %}
         {% endif %}
+
+        <p class="subtitle">
+            Выбери испытание и проверь свои знания!
+        </p>
+
+        <div class="crystals">
+            💎 Кристаллы: 0
+        </div>
+
+        <button class="mode">
+            🧠 Логика
+        </button>
+
+        <button class="mode">
+            ➗ Математика
+        </button>
+
+        <button class="mode">
+            🖼️ Угадай мультсериал
+        </button>
 
     </div>
 
